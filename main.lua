@@ -256,6 +256,17 @@ function love.update(dt)
     --     player2.dy = 0
     -- end
 
+    -- SOLUTION IF MULTIPLAYER MODE IS SELECTED BY USER
+    if (GameType == 1)then
+        if love.keyboard.isDown('up') then
+             player2.dy = -PADDLE_SPEED
+        elseif love.keyboard.isDown('down') then
+            player2.dy = PADDLE_SPEED
+        else
+            player2.dy = 0
+        end
+    end
+
     -- update our ball based on its DX and DY only if we're in play state;
     -- scale the velocity by dt so movement is framerate-independent
     if gameState == 'play' then
@@ -263,12 +274,14 @@ function love.update(dt)
     end
 
     player1:update(dt)
-    -- INITIAL CODE FOR PLAYER 2'S UPDATION:
-    -- player2:update(dt)
+    
+    -- CODE FOR PLAYER 2'S UPDATION:
+    if GameType == 1 then
+        player2:update(dt)
+    end
 
--- MY CODE FOR PLAYER 2'S SPEED AND UPDATION:
 
--- IF SINGLE PLAYER
+-- MY CODE FOR PLAYER 2'S SPEED AND UPDATION IN  SINGLE PLAYER MODE:
 
 if (GameType == 2) then
     if ball.dx > 0 then
@@ -278,20 +291,7 @@ if (GameType == 2) then
         if player2.y < ball.y then
             player2.y = math.min(VIRTUAL_HEIGHT - player2.height,player2.y + (PADDLE_SPEED/Difficulty)*dt)
         end
-
-end
-
--- IF MULTIPLAYER 
-if (GameType == 1)then
-   if love.keyboard.isDown('up') then
-        player2.dy = -PADDLE_SPEED
-    elseif love.keyboard.isDown('down') then
-        player2.dy = PADDLE_SPEED
-    else
-        player2.dy = 0
     end
-end
-
 end
 
 end
